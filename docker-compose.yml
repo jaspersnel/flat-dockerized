@@ -1,0 +1,25 @@
+version: "3"
+services:
+  docserve:
+    build:
+      context: .
+      dockerfile: ./docserve.Dockerfile
+    volumes: 
+      - data:/data/
+    ports:
+      - 8080:8080
+  flat:
+    build:
+      context: .
+      dockerfile: ./flat.Dockerfile
+    environment:
+      - FOLIADOCSERVE_HOST=docserve
+      - DJANGO_SUPERUSER_PASSWORD=admin
+    volumes:
+      - data:/data/
+    ports:
+      - 8000:8000
+    depends_on:
+      - docserve
+volumes:
+  data:
